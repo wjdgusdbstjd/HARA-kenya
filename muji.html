@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=BIZ+UDMincho&family=BIZ+UDPGothic&family=IBM+Plex+Sans+JP&family=Space+Grotesk:wght@300..700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/avenir" rel="stylesheet">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .biz-udmincho-regular {
+        font-family: "BIZ UDMincho", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'SUIT';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Thin.woff2') format('woff2');
+        font-weight: 100;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'SUIT';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraLight.woff2') format('woff2');
+        font-weight: 200;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'SUIT';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Light.woff2') format('woff2');
+        font-weight: 300;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'SUIT';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'SUIT';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'SUIT';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-SemiBold.woff2') format('woff2');
+        font-weight: 600;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'SUIT';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Bold.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'SUIT';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraBold.woff2') format('woff2');
+        font-weight: 800;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'SUIT';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Heavy.woff2') format('woff2');
+        font-weight: 900;
+        font-style: normal;
+    }
+
+    .space-grotesk {
+        font-family: "Space Grotesk", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+
+    .cormorant-garamond {
+        font-family: "Cormorant Garamond", serif;
+        font-optical-sizing: auto;
+        /* font-weight: <weight>; */
+        font-style: normal;
+    }
+
+
+    @import url('https://fonts.cdnfonts.com/css/avenir');
+
+
+    html,
+    body {
+        width: 100vw;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        background-color: #7F0019;
+        color: #FFFFFF;
+        overflow-x: hidden;
+    }
+
+    body {
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    /* JS에서 페이드-인 클래스 붙이면 투명도 1로 올라감 */
+    body.fade-in {
+        opacity: 1;
+    }
+
+    /* 페이드-아웃용 클래스 */
+    body.fade-out {
+        opacity: 0;
+    }
+
+    /* 기존 헤더 스타일 */
+    header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        /* border: 1px solid red; */
+        justify-content: center;
+        align-items: center;
+        padding: 1.5vw;
+        z-index: 30;
+        /* border: 1px solid red; */
+        width: 100vw;
+        transition: all 0.5s ease;
+        border-radius: 0 0 1.1vw 1.1vw;
+    }
+
+    header .logo-name {
+        /* width: 4.5vw; */
+        font-size: 1.5vw;
+        position: relative;
+        right: 42vw;
+        font-family: "BIZ UDMincho", serif;
+        font-weight: 300;
+    }
+
+    header ul {
+        display: flex;
+        list-style-type: none;
+        /* border: 1px solid red; */
+        position: absolute;
+        left: 72vw;
+    }
+
+    header ul li {
+        padding: 1.5vw;
+    }
+
+    header a {
+        text-decoration: none;
+        color: #FFFFFF;
+        font-family: 'SUIT';
+        transition: all 0.5s ease;
+        font-size: 0.9vw;
+    }
+
+    header.scroll {
+        background-color: rgba(255, 255, 255, 0.151);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        transition: background-color 0.5s ease, backdrop-filter 0.5s ease;
+    }
+
+    header.scroll li a,
+    header.scroll .logo-name {
+        color: #F7F8F8;
+    }
+
+
+    /* ↓↓↓ 호버 시 서브메뉴 표시를 위한 추가 CSS ↓↓↓ */
+
+    /* DESIGN 메뉴에 서브메뉴를 붙이기 위해 position 기준 설정 */
+    header ul li.has-submenu {
+        position: relative;
+    }
+
+    /* 서브메뉴 기본 숨김 */
+    header ul li.has-submenu .submenu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+
+        /* 숨길 때 */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(0.5vw);
+
+        /* transition 추가 */
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        flex-direction: column;
+        background-color: rgba(38, 38, 38, 0.7);
+        border-radius: 0.5vw;
+        overflow: hidden;
+        max-width: 16vw;
+    }
+
+    /* 서브메뉴 아이템 스타일 */
+    header ul li.has-submenu .submenu li a {
+        display: block;
+        padding: 0.4vw 0.1vw;
+        font-size: 0.9vw;
+        line-height: 1.2;
+        color: #fff;
+        white-space: nowrap;
+        transition: transform 0.3s ease;
+        transform-origin: left center;
+    }
+
+
+    header ul li.has-submenu .submenu li+li {
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* 서브메뉴 항목 사이 구분선 */
+    header ul li.has-submenu .submenu li+li a {
+        border-top: none;
+    }
+
+    /* 호버했을 때 서브메뉴 보이기 */
+    header ul li.has-submenu:hover .submenu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        /* 살짝 올라오면서 생김 */
+    }
+
+    /* 서브메뉴 항목 호버 효과 */
+    header ul li.has-submenu .submenu li a:hover {
+        transform: scale(1.1);
+        /* 글자 크기만 1.2배 확대 */
+    }
+
+    #main {
+        width: 100vw;
+        min-height: 60vw;
+        background-image: url('img/muji-main-bg.png');
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #main h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 7.4vw;
+    }
+
+    #main .h1-1 {
+        position: relative;
+        top: 1.3vw;
+    }
+
+    #main p {
+        font-family: 'SUIT';
+        width: 44.9vw;
+        text-align: justify;
+        /* position: relative;
+        left: 23.5vw;
+        bottom: 10vw; */
+        font-size: 1.3vw;
+        z-index: 5;
+    }
+
+    #main .main-img {
+        margin: 4vw;
+        opacity: 1;
+    }
+
+    #main img {
+        width: 23vw;
+        position: relative;
+        left: 2vw;
+    }
+
+    #content .content-1 {
+        width: 100vw;
+        min-height: 50vw;
+        background-image: url('img/muji-1.png');
+        /* padding: 5vw; */
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 16vw;
+    }
+
+    #content .content-1 p {
+        width: 60vw;
+        text-align: justify;
+        font-size: 1.9vw;
+        font-family: 'SUIT';
+        position: relative;
+        right: 9vw;
+        bottom: 11vw;
+    }
+
+    #content .content-1 h1 {
+        font-size: 5vw;
+        font-family: "Space Grotesk", sans-serif;
+        position: relative;
+        left: 20vw;
+    }
+
+    #content .content-1 h1:nth-of-type(1) {
+        /* color: red; */
+        /* position: relative;
+        right: 20vw; */
+        margin-right: 43vw;
+    }
+
+    #content .content-1 h1:nth-of-type(2) {
+        /* color: red; */
+        /* position: relative;
+        right: 20vw; */
+        margin-right: 20vw;
+    }
+
+    #content .content-2 {
+        width: 100vw;
+        min-height: 80vw;
+        /* border: 3px solid blue; */
+        display: flex;
+        flex-flow: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #content .content-2 p {
+        font-size: 2.2vw;
+        font-family: 'SUIT';
+        text-align: justify;
+    }
+
+    #content .content-2 p:nth-of-type(1) {
+        width: 53vw;
+        position: relative;
+        right: 12vw;
+        top: 11vw;
+    }
+
+    #content .content-2 p:nth-of-type(2) {
+        width: 75vw;
+        position: relative;
+        bottom: 9vw;
+    }
+
+    #content .content-2 img {
+        width: 90vw;
+        margin: 10vw;
+        position: relative;
+        right: 30vw;
+        filter: grayscale(100%) contrast(120%);
+        transition: filter 0.3s ease;
+        /* 부드럽게 전환 */
+    }
+
+    /* .content-2 img.color {
+        filter: grayscale(0%);
+    } */
+
+    /* #content .content-3 img {
+        width: 100vw;
+    } */
+
+    #content .content-3 {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 14vw;
+    }
+
+    #content .content-3 p {
+        width: 75vw;
+        font-size: 2.2vw;
+        font-family: 'SUIT';
+        text-align: justify;
+    }
+
+
+    /* footer.css 에 삽입 */
+    .site-footer {
+        background-color: #7F0019;
+        color: #FFFFFF;
+        border-top: 0.1vw solid #ffffff83;
+        padding: 2vw 2vw;
+        /* font-family: 'Avenir', 'Helvetica Neue', Arial, sans-serif; */
+    }
+
+    .site-footer .footer-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+
+    }
+
+    .footer-left {
+        max-width: 60%;
+    }
+
+    .footer-logo {
+        font-size: 1.7vw;
+        font-weight: 400;
+        font-family: "BIZ UDMincho", serif;
+    }
+
+    .footer-tagline {
+        margin-top: 1vw;
+        line-height: 1.2;
+        font-size: 1.25vw;
+        font-weight: 100;
+        font-family: 'SUIT';
+    }
+
+    .footer-nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 2vw;
+        font-family: 'SUIT';
+    }
+
+    .footer-nav a {
+        text-decoration: none;
+        color: inherit;
+        font-size: 1vw;
+        text-transform: uppercase;
+        letter-spacing: 0.08vw;
+        transition: opacity 0.3s;
+        font-family: 'SUIT';
+    }
+
+    .footer-nav a:hover {
+        opacity: 0.7;
+    }
+
+    .footer-bottom {
+        margin-top: 2vw;
+        text-align: right;
+    }
+
+    .footer-bottom p {
+        margin: 0;
+        font-size: 0.9vw;
+        opacity: 0.6;
+        font-family: 'SUIT';
+        font-weight: 200;
+    }
+</style>
+
+<body>
+
+    <header>
+        <a class="logo-name" href="index.html">
+            <p>原硏哉</p>
+        </a>
+        <ul class="main-menu">
+            <li><a href="index.html#hara">ABOUT</a></li>
+            <li class="has-submenu">
+                <a href="nav.html">DESIGN</a>
+                <ul class="submenu">
+                    <li><a href="haptic.html">Haptic</a></li>
+                    <li><a href="umeda.html">Signage system <br>
+                            for Umeda Hospital
+                        </a></li>
+                    <li><a href="muji.html">MUJI <br>
+                            Art Direction</a></li>
+                    <li><a href="redesign.html">Re-Design <br>
+                            Exhibition</a></li>
+                </ul>
+            </li>
+            <li><a href="value.html">EMPTINESS</a></li>
+        </ul>
+    </header>
+
+    <section id="main">
+        <div class="main-txt">
+            <h1 class="h1-1">MUJI</h1>
+            <h1 class="h1-2">Art Direction</h1>
+            <p>
+                Since 2001, Kenya Hara has served as the art director of MUJI, redefining the brand’s philosophy and
+                visual identity.
+                True to the name “MUJI” (short for “no-brand quality goods”), Hara embraced the aesthetic of emptiness
+                and anonymity,
+                translating it into visual form through restrained color, honest materials, and minimal structures. His
+                direction
+                extended beyond product design to include packaging, store layouts, graphics, and advertisements
+                embodying his belief
+                that design should not promote brands, but propose a way of living. Through MUJI, Hara established a
+                commercial design
+                case where social value, sustainability, and sensory experienceare meaningfully integrated into everyday
+                products.
+            </p>
+        </div>
+        <div class="main-img">
+            <img src="img/muji.png" alt="">
+        </div>
+    </section>
+
+    <section id="content">
+        <div class="content-1">
+            <p>
+                As MUJI’s director, Kenya Hara focused on “essence in simplicity”,
+                designing everyday objects that add real value. He emphasized harmony of function and form, showing that
+                design can
+                enhance life beyond mere consumption.
+            </p>
+
+            <h1>"Sometimes simplicity</h1>
+            <h1>surpasses extravagance."</h1>
+        </div>
+        <div class="content-2">
+            <p>
+                Kenya Hara’s design philosophy is not merely about creating beauty it seeks to restore the human senses
+                and redefine our relationship with society.
+            </p>
+            <img src="img/muji-pack.png" alt="">
+            <p>
+                Through the concepts of “emptiness” and “white,” his work invites us to reflect on true value and
+                essence in a world
+                overwhelmed by information and consumption. His design becomes an act of social consideration, offering
+                a quiet but
+                powerful vision for sustainable and harmonious living.
+            </p>
+        </div>
+        <div class="content-3">
+            <!-- <img src="img/muji-2.png" alt=""> -->
+            <p>
+                MUJI products are not designed in a way that requires users to understand every function in detail.
+                Instead, the product
+                comes to life and fulfills its function through the user's own intention and purpose.
+            </p>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-top">
+            <div class="footer-left">
+                <div class="footer-logo">原研哉</div>
+                <p class="footer-tagline">
+                    This is a space to rediscover<br>
+                    what already exists — through white, emptiness, and sense.
+                </p>
+            </div>
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="index.html#hara">ABOUT</a></li>
+                    <li><a href="nav.html">DESIGN</a></li>
+                    <li><a href="value.html">EMPTINESS</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Kenya Hara Website. Designed by Kim junghyun</p>
+        </div>
+    </footer>
+
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            // 1) 페이드인 트리거
+            document.body.classList.add('fade-in');
+
+            // 2) slideLink 요소가 있는지 확인
+            const slideLink = document.getElementById('slideLink');
+            if (!slideLink) return;   // 없으면 이 페이지에선 더 이상 실행하지 않음
+
+            slideLink.addEventListener('click', e => {
+                e.preventDefault();
+                const url = slideLink.href;
+                document.body.classList.remove('fade-in');
+                document.body.classList.add('fade-out');
+                document.body.addEventListener('transitionend', () => {
+                    window.location.href = url;
+                }, { once: true });
+            });
+        });
+
+        const header = document.querySelector('header');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                header.classList.add('scroll');
+            } else {
+                header.classList.remove('scroll');
+            }
+        });
+
+
+        gsap.from(
+            "#main .h1-1",
+            {
+                y: "-20vw", //8vw아래에서 시작
+                opacity: 0, //투명인 상태에서 시작
+                duration: 1.4, //얼마동안 이 모션을 진행할건지 - 숫자가 커질수록 느려짐
+                ease: "power1.out",
+                stagger: 0.35, //각 애미메이션 사이에 0.15초의 지연을 둠
+                scrollTrigger: {
+                    trigger: ".h1-1",   // → trigger 를 h2 로
+                    start: "top bottom",                // h2 의 top 이 뷰포트 bottom 에 닿을 때
+                    toggleActions: "play reverse play reverse", // 나타날때마다 모션 진행
+                    markers: false //페이지에 스크롤 위치 마커
+                }
+            }
+        );
+
+        gsap.from(
+            "#main .h1-2",
+            {
+                x: "-20vw", //8vw아래에서 시작
+                opacity: 0, //투명인 상태에서 시작
+                duration: 1.4, //얼마동안 이 모션을 진행할건지 - 숫자가 커질수록 느려짐
+                ease: "power1.out",
+                stagger: 0.35, //각 애미메이션 사이에 0.15초의 지연을 둠
+                scrollTrigger: {
+                    trigger: ".h1-2",   // → trigger 를 h2 로
+                    start: "top bottom",                // h2 의 top 이 뷰포트 bottom 에 닿을 때
+                    toggleActions: "play reverse play reverse", // 나타날때마다 모션 진행
+                    markers: false //페이지에 스크롤 위치 마커
+                }
+            }
+        );
+
+        gsap.from(
+            "#main .main-img",
+            {
+                x: 0, //8vw아래에서 시작
+                opacity: 0,
+                scale: 0.2,//투명인 상태에서 시작
+                duration: 1.6, //얼마동안 이 모션을 진행할건지 - 숫자가 커질수록 느려짐
+                ease: "power1.out",
+                stagger: 0.35, //각 애미메이션 사이에 0.15초의 지연을 둠
+                scrollTrigger: {
+                    trigger: ".main-img",   // → trigger 를 h2 로
+                    start: "top bottom",                // h2 의 top 이 뷰포트 bottom 에 닿을 때
+                    toggleActions: "play reverse play reverse", // 나타날때마다 모션 진행
+                    markers: false //페이지에 스크롤 위치 마커
+                }
+            }
+        );
+
+
+        gsap.from(
+            "#content .content-2 img",
+            {
+                x: "-10vw", //8vw아래에서 시작
+                opacity: 0,
+                scale: 0.2,//투명인 상태에서 시작
+                duration: 1.6, //얼마동안 이 모션을 진행할건지 - 숫자가 커질수록 느려짐
+                ease: "power1.out",
+                stagger: 0.35, //각 애미메이션 사이에 0.15초의 지연을 둠
+                scrollTrigger: {
+                    trigger: ".content-2",   // → trigger 를 h2 로
+                    start: "top bottom",                // h2 의 top 이 뷰포트 bottom 에 닿을 때
+                    toggleActions: "play reverse play reverse", // 나타날때마다 모션 진행
+                    markers: false //페이지에 스크롤 위치 마커
+                }
+            }
+        );
+
+        // gsap ScrollTrigger 연동 (선택)
+        gsap.to(".content-2 img", {
+            filter: "grayscale(0%) contrast(100%)",
+            duration: 0.8,
+            delay: 0.9,
+            ease: "power1.out",
+            scrollTrigger: {
+                trigger: ".content-2 img",
+                start: "top 80%", // 이미지가 뷰포트에 80%쯤 들어왔을 때
+                toggleActions: "play none none none"
+            }
+        });
+    </script>
+</body>
+
+</html>
