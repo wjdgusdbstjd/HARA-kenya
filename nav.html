@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exhibition Carousel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=BIZ+UDMincho&family=BIZ+UDPGothic&family=IBM+Plex+Sans+JP&family=Space+Grotesk:wght@300..700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/avenir" rel="stylesheet">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .biz-udmincho-regular {
+            font-family: "BIZ UDMincho", serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SUIT';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Thin.woff2') format('woff2');
+            font-weight: 100;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SUIT';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraLight.woff2') format('woff2');
+            font-weight: 200;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SUIT';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SUIT';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SUIT';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SUIT';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SUIT';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SUIT';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-ExtraBold.woff2') format('woff2');
+            font-weight: 800;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SUIT';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Heavy.woff2') format('woff2');
+            font-weight: 900;
+            font-style: normal;
+        }
+
+        .space-grotesk {
+            font-family: "Space Grotesk", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+
+        .cormorant-garamond {
+            font-family: "Cormorant Garamond", serif;
+            font-optical-sizing: auto;
+            /* font-weight: <weight>; */
+            font-style: normal;
+        }
+
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        a {
+            text-decoration: none;
+            color: #FFFFFF;
+        }
+
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            /* border: 1px solid red; */
+            justify-content: center;
+            align-items: center;
+            padding: 1.5vw;
+            z-index: 30;
+            /* border: 1px solid red; */
+            width: 100vw;
+            transition: all 0.5s ease;
+            border-radius: 0 0 1.1vw 1.1vw;
+        }
+
+        header .logo-name {
+            /* width: 4.5vw; */
+            font-size: 1.5vw;
+            position: relative;
+            right: 44vw;
+            font-family: "BIZ UDMincho", serif;
+            font-weight: 300;
+        }
+
+        #main.slide-0 .logo-name {
+            color: #A8660B;
+        }
+
+        #main.slide-1 .logo-name {
+            color: #B62618;
+        }
+
+        #main.slide-2 .logo-name {
+            color: #FFFFFF;
+        }
+
+        #main.slide-3 .logo-name {
+            color: #96703B;
+        }
+
+        #main {
+            display: flex;
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .left,
+        .right {
+            flex: 0 0 50%;
+            position: relative;
+        }
+
+        .left {
+            display: flex;
+            align-items: center;
+            padding: 40px;
+            /* 배경색 전환을 부드럽게 */
+            transition: background-color .4s ease;
+        }
+
+        .left-content {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity .4s ease, transform .4s ease;
+        }
+
+        .left-content.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .right-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+            transition: opacity .3s ease;
+        }
+
+        .left h2 {
+            margin-bottom: .5rem;
+            font-size: 4.3vw;
+            font-family: "Space Grotesk", sans-serif;
+        }
+
+        .left h3 {
+            font-size: 2vw;
+            margin-bottom: 1rem;
+            font-family: "Space Grotesk", sans-serif;
+        }
+
+        .left p {
+            line-height: 1.5;
+            white-space: pre-wrap;
+            font-size: 1.3vw;
+            width: 34vw;
+            text-align: justify;
+            font-family: 'SUIT';
+            font-weight: 400;
+        }
+
+        .left a {
+            font-family: 'SUIT';
+            font-weight: 400;
+            opacity: 0.5;
+            transition: all 0.3s ease-in-out;
+            /* margin-top: 15vw; */
+            position: relative;
+            top: 3vw;
+            font-size: 1.3vw;
+        }
+
+        .left a:hover {
+            /* font-size: 1.5vw; */
+            opacity: 1;
+            font-weight: 600;
+        }
+
+
+        #main.slide-0 .title,
+        #main.slide-0 .subtitle,
+        #main.slide-0 .description,
+        #main.slide-0 a {
+            color: #A8660B;
+        }
+
+        #main.slide-1 .title,
+        #main.slide-1 .subtitle,
+        #main.slide-1 .description,
+        #main.slide-1 a {
+            color: #B62618;
+        }
+
+        #main.slide-2 .title,
+        #main.slide-2 .subtitle,
+        #main.slide-2 .description,
+        #main.slide-2 a {
+            color: #FFFFFF;
+        }
+
+        #main.slide-3 .title,
+        #main.slide-3 .subtitle,
+        #main.slide-3 .description,
+        #main.slide-3 a {
+            color: #96703B;
+        }
+
+
+        #main.slide-1 .title {
+            line-height: 1;
+            margin-bottom: 2vw;
+        }
+
+        #main.slide-2 .title {
+            white-space: pre-line;
+        }
+
+        #main.slide-3 .title {
+            white-space: pre-line;
+        }
+
+        /* #main.slide-0 a {} */
+
+
+        .center-img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 1;
+            transition: opacity .3s ease;
+            z-index: 1;
+            transition: all .0.5s ease-in-out;
+        }
+
+        #main.slide-0 .center-img {
+            width: 20vw;
+        }
+
+        #main.slide-1 .center-img {
+            /* top: 53%; */
+            width: 22vw;
+        }
+
+        #main.slide-2 .center-img {
+            /* width: 18vw; */
+            width: 18vw;
+        }
+
+        #main.slide-3 .center-img {
+            /* width: 28vw; */
+            /* left: 48%; */
+            width: 25vw;
+        }
+
+
+        /* #main .slide-link {
+            position: relative;
+            left: 1vw;
+        } */
+
+        .right {
+            position: relative;
+        }
+
+        .right-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 1;
+            transition: opacity .3s ease;
+        }
+
+        .keyword {
+            position: absolute;
+            top: 2vw;
+            left: 58vw;
+            font-size: 13vw;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.406);
+            pointer-events: none;
+            font-family: "Space Grotesk", sans-serif;
+        }
+
+        #main.slide-2 .keyword {
+            white-space: pre-line;
+            line-height: 0.9;
+            font-size: 9.4vw;
+            left: 54vw;
+        }
+
+        #main.slide-3 .keyword {
+            white-space: pre-line;
+            line-height: 0.9;
+            font-size: 9.4vw;
+            left: 54vw;
+        }
+
+        .nav {
+            position: absolute;
+            bottom: 4vw;
+            right: 4vw;
+            z-index: 2;
+            /* width: 14vw;
+            height: 14vw; */
+            /* background-color: #F8F8F8;
+            border-radius: 4vw 0 0 0;
+            display: flex;
+            justify-content: center;
+            align-items: center; */
+            display: flex;
+        }
+
+        .nav #prev,
+        #next {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 2.4vw;
+            height: 2.4vw;
+            margin: 0.5vw;
+        }
+
+        .nav button:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+
+        /* 버튼 안 이미지까지 반투명 */
+        .nav button:disabled img {
+            opacity: 0.4;
+        }
+
+
+        .nav button {
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            width: 40px;
+            height: 40px;
+            margin: 0 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <header>
+        <a class="logo-name" href="home.html">
+            <p>原硏哉</p>
+        </a>
+    </header> -->
+    <section id="main">
+
+        <header>
+            <a class="logo-name" href="index.html">
+                <p>原硏哉</p>
+            </a>
+        </header>
+
+        <div class="left">
+            <!-- 이 wrapper가 있어야 .left-content를 찾아옵니다 -->
+            <div class="left-content">
+                <h2 class="title"></h2>
+                <h3 class="subtitle"></h3>
+                <p class="description"></p>
+                <div class="slide-link">
+                    <a id="slideLink" href="" target="_self">Go to page</a>
+                </div>
+            </div>
+        </div>
+
+        <img class="center-img" src="" alt="exhibit">
+
+        <!-- 배경 이미지를 바꾸려면 .right 자체를 사용하거나, 안에 img를 둡니다 -->
+        <div class="right">
+            <img class="right-img" src="" alt="background">
+        </div>
+
+        <div class="keyword"></div>
+
+        <div class="nav">
+            <button id="prev">
+                <img src="img/arrow-left.png" alt="prev">
+            </button>
+            <button id="next">
+                <img src="img/arrow-right.png" alt="next">
+            </button>
+        </div>
+    </section>
+
+    <script>
+
+        const slides = [
+            {
+                bgColor: '#FFB94E',
+                title: 'HAPTIC',
+                subtitle: '“Rediscovering the Senses”',
+                description: `We live in a world ruled by vision, but true experience begins at the fingertips. HAPTIC focuses on how we understand the world through touch. By interacting directly with objects and materials, this exhibition expands the boundaries of perception and invites you into a deeper, more embodied dimension of design — where body and mind become one through sensation.`,
+                centerImg: 'img/haptic_banana.png',
+                rightImg: 'img/haptic-bg.png',
+                keyword: 'Sense',
+                linkUrl: 'haptic.html'
+                // linkText: 'MUJI 더 알아보기'
+            },
+            {
+                bgColor: '#F0F0F0',
+                title: 'Umeda Hospital Signage system',
+                subtitle: '“Sign as Silence”',
+                description: `A hospital is a space where emotion often comes before information. In the Umeda Hospital signage system, Kenya Hara presents a new form of communication — quiet yet clear guidance. Without shouting or demanding attention, the signs harmonize with the environment  and gently support the user's experience. Here, signage is not just a marker, but a medium that connects space with feeling.`,
+                centerImg: 'img/umeda.png',
+                rightImg: 'img/umeda-bg.png',
+                keyword: 'White',
+                linkUrl: 'umeda.html'
+            },
+
+            {
+                bgColor: '#7F0019',
+                title: 'MUJI\nArt Direction',
+                subtitle: '“The Emptiness of Being”',
+                description: `MUJI is more than just a brand. Its restrained forms, clear functions, and thoughtful emptiness reveal a quiet depth. As MUJI’s art director, Kenya Hara proposed a design of emptiness,  inviting users to find their own meanings rather than being told what to see or do. With a philosophy rooted in acceptance, not assertion, MUJI encourages us to reconsider the objects and spaces in our daily lives.`,
+                centerImg: 'img/muji.png',
+                rightImg: 'img/muji-bg.png',
+                keyword: 'Emptiness',
+                linkUrl: 'muji.html'
+            },
+
+            {
+                bgColor: '#F6D5A7',
+                title: 'Re-Design\nExhibition',
+                subtitle: '"Rediscover the Familiar"',
+                description: `Design is not about creating something new — it’s about rediscovering hidden meanings in what already surrounds us. The RE-DESIGN exhibition invites us to look again, to feel again, to think again about the ordinary things we take for granted. Through this exhibition, Kenya Hara reminds us: Design is not about what we make, but about how we perceive.`,
+                centerImg: 'img/redesign.png',
+                rightImg: 'img/redesign-bg.png',
+                keyword: 'Emptiness',
+                linkUrl: 'redesign.html'
+            },
+            // ... 앞으로 더 추가할 슬라이드 객체
+        ];
+
+        let current = 0;
+        const mainEl = document.getElementById('main');
+        const leftEl = document.querySelector('.left');
+        const leftContent = document.querySelector('.left-content');
+        const titleEl = document.querySelector('.title');
+        const subtitleEl = document.querySelector('.subtitle');
+        const descEl = document.querySelector('.description');
+        const centerImg = document.querySelector('.center-img');
+        const rightImg = document.querySelector('.right-img');
+        const keywordEl = document.querySelector('.keyword');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+
+
+
+
+        function updateCenterImg(newSrc, newWidth) {
+            // 1) 이미지 숨기기 (투명)
+            centerImg.style.transition = 'all .3s ease';  // 오직 opacity만 트랜지션
+            centerImg.style.opacity = 0;
+
+            // 2) width를 즉시 변경 (트랜지션 없음)
+            centerImg.style.transition = 'none';
+            centerImg.style.width = newWidth;
+
+            // 3) src도 즉시 바꿔버림
+            centerImg.src = newSrc;
+
+            // 4) 강제 리플로우 → transition 원복 → 페이드 인
+            //    이렇게 하면 width 변경은 보이지 않고 opacity만 애니메이트
+            void centerImg.offsetWidth;
+            centerImg.style.transition = 'all .3s ease';
+            centerImg.style.opacity = 1;
+        }
+
+
+        function updateLeftBg(color, delay) {
+            setTimeout(() => leftEl.style.backgroundColor = color, delay);
+        }
+        function updateLeftText(t, st, d, delay) {
+            setTimeout(() => {
+                titleEl.textContent = t;
+                subtitleEl.textContent = st;
+                descEl.textContent = d;
+                leftContent.classList.remove('animate');
+                void leftContent.offsetWidth;
+                leftContent.classList.add('animate');
+            }, delay);
+        }
+        function updateRightBg(src, delay) {
+            setTimeout(() => {
+                rightImg.style.opacity = 0;
+                setTimeout(() => {
+                    rightImg.src = src;
+                    rightImg.style.opacity = 1;
+                }, 300);
+            }, delay);
+        }
+
+        function updateNavButtons() {
+            prevBtn.disabled = current === 0;
+            nextBtn.disabled = current === slides.length - 1;
+        }
+
+        function goToSlide(idx) {
+            const old = current;
+            const s = slides[idx];
+            current = idx;
+
+            slideLink.href = `${s.linkUrl}?from=navigation&slide=${idx}`;
+            const url = new URL(window.location);
+            url.searchParams.set('slide', idx);
+            window.history.replaceState({}, '', url);
+
+
+
+            updateCenterImg(s.centerImg);
+            updateLeftBg(s.bgColor, 300);
+
+            keywordEl.textContent = '';
+            keywordEl.style.opacity = 1;
+
+
+            setTimeout(() => {
+                // 텍스트 교체
+                titleEl.textContent = s.title;
+                subtitleEl.textContent = s.subtitle;
+                descEl.textContent = s.description;
+
+                // 슬라이드인 애니메이션
+                leftContent.classList.remove('animate');
+                void leftContent.offsetWidth;
+                leftContent.classList.add('animate');
+
+                // ▶ 이 시점에만 CSS 클래스 교체
+                mainEl.classList.remove(`slide-${old}`);
+                mainEl.classList.add(`slide-${idx}`);
+
+                keywordEl.textContent = s.keyword;
+
+                gsap.from(".title, .subtitle, .description, .slide-link", {
+                    x: -100,
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    stagger: 0.15,
+                });
+
+
+                gsap.from(".keyword", {
+                    y: 200,
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.out",
+                    stagger: 0.15,
+                });
+            }, 500);
+            updateRightBg(s.rightImg, 500);
+            // keywordEl.textContent = s.keyword;
+            updateNavButtons();
+        }
+
+
+        prevBtn.addEventListener('click', () => goToSlide(current - 1));
+        nextBtn.addEventListener('click', () => goToSlide(current + 1));
+
+
+        // URL 파라미터에서 인덱스 읽기
+        const urlParams = new URLSearchParams(window.location.search);
+        const savedSlideIndex = parseInt(urlParams.get('slide')) || 0;
+        goToSlide(savedSlideIndex);
+
+
+
+
+        // goToSlide(0);
+
+
+
+        // gsap.from(
+        //     "#main.slide-1 .title",
+        //     {
+        //         y: "12vw", //8vw아래에서 시작
+        //         opacity: 0, //투명인 상태에서 시작
+        //         duration: 1, //얼마동안 이 모션을 진행할건지 - 숫자가 커질수록 느려짐
+        //         ease: "power1.out",
+        //         stagger: 0.15, //각 애미메이션 사이에 0.15초의 지연을 둠
+        //         scrollTrigger: {
+        //             trigger: ".slide-1",   // → trigger 를 h2 로
+        //             start: "top bottom",                // h2 의 top 이 뷰포트 bottom 에 닿을 때
+        //             toggleActions: "play reverse play reverse", // 나타날때마다 모션 진행
+        //             markers: false //페이지에 스크롤 위치 마커
+        //         }
+        //     }
+        // );
+    </script>
+</body>
+
+</html>
